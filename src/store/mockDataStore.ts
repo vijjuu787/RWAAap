@@ -90,7 +90,7 @@ const mockAssets: Asset[] = [
     category: 'real-estate',
     status: 'pending',
     value: 8500000,
-    imageUrl: '/assets/real-estate/vineyard-1.jpg.svg',
+    imageUrl: '/assets/real-estate/vineyard-1.jpg',
     createdAt: new Date('2024-02-10'),
     owner: {
       id: 'user456',
@@ -120,7 +120,7 @@ const mockAssets: Asset[] = [
     category: 'jewelry',
     status: 'validated',
     value: 85000,
-    imageUrl: '/assets/jewelry/diamond-ring-1.jpg.svg',
+    imageUrl: '/assets/jewelry/diamond-ring-1.jpg',
     createdAt: new Date('2024-01-18'),
     validatedAt: new Date('2024-01-25'),
     owner: {
@@ -148,7 +148,7 @@ const mockAssets: Asset[] = [
     category: 'jewelry',
     status: 'action_required',
     value: 125000,
-    imageUrl: '/assets/jewelry/tiara-1.jpg.svg',
+    imageUrl: '/assets/jewelry/tiara-1.jpg',
     createdAt: new Date('2024-02-15'),
     owner: {
       id: 'user567',
@@ -176,7 +176,7 @@ const mockAssets: Asset[] = [
     category: 'watches',
     status: 'validated',
     value: 180000,
-    imageUrl: '/assets/watches/rolex-daytona.jpg.svg',
+    imageUrl: '/assets/watches/rolex-daytona.jpg',
     createdAt: new Date('2024-01-15'),
     validatedAt: new Date('2024-01-20'),
     owner: {
@@ -204,7 +204,7 @@ const mockAssets: Asset[] = [
     category: 'art',
     status: 'pending',
     value: 15000,
-    imageUrl: '/assets/art/abstract-1.jpg.svg',
+    imageUrl: '/assets/art/abstract-1.jpg',
     createdAt: new Date('2024-02-01'),
     owner: {
       id: 'user123',
@@ -232,7 +232,7 @@ const mockAssets: Asset[] = [
     category: 'jewelry',
     status: 'action_required',
     value: 45000,
-    imageUrl: '/assets/jewelry/sapphire-necklace.jpg.svg',
+    imageUrl: '/assets/jewelry/sapphire-necklace.jpg',
     createdAt: new Date('2024-01-25'),
     owner: {
       id: 'user123',
@@ -287,7 +287,7 @@ const mockAssets: Asset[] = [
     category: 'collectibles',
     status: 'action_required',
     value: 75000,
-    imageUrl: '/assets/collectibles/baseball-cards.jpg.svg',
+    imageUrl: '/assets/collectibles/baseball-cards.png',
     createdAt: new Date('2024-02-05'),
     owner: {
       id: 'user123',
