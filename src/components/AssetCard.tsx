@@ -1,4 +1,3 @@
-import React from 'react';
 import { Check } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Asset } from '../types';
@@ -10,21 +9,20 @@ import { Button } from './ui/Button';
 interface AssetCardProps {
   asset: Asset;
   onQuickView?: (asset: Asset) => void;
+  onBuyClick?: (asset: Asset) => void;
 }
 
-export const AssetCard = ({ asset, onQuickView }: AssetCardProps) => {
-  const { id, title, category, price, imageUrl, isVerified, listingType, auctionEndTime } = asset;
+export const AssetCard = ({ asset, onQuickView, onBuyClick }: AssetCardProps) => {
+  const { title, category, price, imageUrl, isVerified, listingType, auctionEndTime } = asset;
 
   const getActionButton = () => {
     switch (listingType) {
       case 'auction':
         return <Button size="sm" fullWidth onClick={() => onQuickView?.(asset)}>Place Bid</Button>;
       case 'fixed':
-        return <Button size="sm" fullWidth onClick={() => onQuickView?.(asset)}>Buy Now</Button>;
+        return <Button size="sm" fullWidth onClick={() => onBuyClick?.(asset)}>Buy Now</Button>;
       case 'swap':
         return <Button size="sm" variant="secondary" fullWidth onClick={() => onQuickView?.(asset)}>Swap Asset</Button>;
-      case 'lend':
-        return <Button size="sm" variant="secondary" fullWidth onClick={() => onQuickView?.(asset)}>View Terms</Button>;
       default:
         return <Button size="sm" fullWidth onClick={() => onQuickView?.(asset)}>View Details</Button>;
     }
@@ -55,7 +53,7 @@ export const AssetCard = ({ asset, onQuickView }: AssetCardProps) => {
             >
               {listingType === 'auction' ? 'Auction' : 
                listingType === 'fixed' ? 'Buy Now' : 
-               listingType === 'swap' ? 'Swap' : 'Lend'}
+               listingType === 'swap' ? 'Swap' : 'View Details'}
             </Badge>
           </div>
         </div>

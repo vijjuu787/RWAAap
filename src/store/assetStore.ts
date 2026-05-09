@@ -49,6 +49,10 @@ interface AssetState {
   
   // Asset Stats
   updateAssetStats: (id: string, stats: { views?: number; likes?: number }) => Promise<void>;
+  
+  // New methods
+  loadMoreAssets: () => Promise<void>;
+  initialLoad: () => Promise<void>;
 }
 
 export const useAssetStore = create<AssetState>((set, get) => ({
@@ -387,4 +391,32 @@ export const useAssetStore = create<AssetState>((set, get) => ({
       set({ isLoading: false });
     }
   },
+
+  loadMoreAssets: async () => {
+    set({ isLoading: true });
+    try {
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      set((state) => ({
+        assets: [...state.assets, /* Add more assets here */],
+        isLoading: false
+      }));
+    } catch (error) {
+      set({ error: 'Failed to load more assets', isLoading: false });
+    }
+  },
+
+  initialLoad: async () => {
+    set({ isLoading: true });
+    try {
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      set({
+        assets: [], // Add initial assets here
+        isLoading: false
+      });
+    } catch (error) {
+      set({ error: 'Failed to load assets', isLoading: false });
+    }
+  }
 }));

@@ -83,7 +83,7 @@ export const Header = () => {
 
   const navItems = [
     { name: 'Marketplace', path: '/marketplace' },
-    { name: 'Community', path: '/community' },
+    // { name: 'Community', path: '/community' },
   ];
 
   return (
@@ -146,7 +146,7 @@ export const Header = () => {
             exit={{ opacity: 0, height: 0 }}
             className="md:hidden bg-white border-t"
           >
-            {/* <div className="container-custom py-4">
+             <div className="container-custom py-4">
               <nav className="flex flex-col gap-4 text-center">
                 {navItems.map((item) => (
                   <Link
@@ -163,7 +163,7 @@ export const Header = () => {
                 ))}
                 <div className="pt-4 border-t">{renderAuthButton()}</div>
               </nav>
-            </div> */}
+            </div> 
           </motion.div>
         )}
       </AnimatePresence>

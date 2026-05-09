@@ -21,6 +21,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isCollapsed, toggleSidebar }) 
     { name: 'Asset Explorer', path: '/explorer', icon: Package },
     { name: 'Asset Creation', path: '/asset-creation', icon: Layers },
     { name: 'Validator Hub', path: '/validators', icon: Shield },
+    { name: 'My Assets', path: '/my-assets', icon: Package },
     { name: 'Profile', path: '/profile', icon: User },
     { name: 'Settings', path: '/settings', icon: Settings },
   ];

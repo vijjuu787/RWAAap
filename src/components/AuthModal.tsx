@@ -199,7 +199,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
                           htmlFor="email"
                           className="block text-sm font-medium text-neutral-700 mb-1"
                         >
-                          Email address
+                          Email address hiiihello how are upi
                         </label>
                         <div className="relative">
                           <input

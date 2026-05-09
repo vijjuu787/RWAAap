@@ -13,19 +13,11 @@ export const Footer = () => {
     { name: 'Marketplace', path: '/marketplace' },
     { name: 'Tokenize', path: '/tokenize' },
     { name: 'Validators', path: '/validators' },
-    { name: 'Explorer', path: '/explorer' },
-    { name: 'Community', path: '/community' },
+    { name: 'Explorer', path: '/explorer' }
   ];
 
-  const resourcesItems = [
-    { name: 'FAQs', path: '/faqs' },
-    { name: 'Documentation', path: '/documentation' },
-    { name: 'API', path: '/api' },
-    { name: 'Blog', path: '/blog' },
-    { name: 'Tutorials', path: '/tutorials' },
-  ];
-
-  const handleOpenAuthModal = () => {
+ 
+ const handleOpenAuthModal = () => {
     setIsAuthModalOpen(true);
   };
 
@@ -36,9 +28,9 @@ export const Footer = () => {
   return (
     <footer className="bg-primary-800 text-white">
       <div className="container-custom py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Logo & About */}
-          <div className="md:col-span-1">
+          <div>
             <Link to="/" className="flex items-center">
               <AnimatedLogo />
             </Link>
@@ -79,21 +71,6 @@ export const Footer = () => {
           </div>
 
           {/* Resources */}
-          <div>
-            <h3 className="text-lg font-semibold mb-4 text-white">Resources</h3>
-            <ul className="space-y-2">
-              {resourcesItems.map((item) => (
-                <li key={item.name}>
-                  <Link
-                    to={item.path}
-                    className="text-neutral-300 hover:text-white transition-colors text-sm"
-                  >
-                    {item.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
 
           {/* Newsletter */}
           <div>
@@ -130,7 +107,7 @@ export const Footer = () => {
             {[
               { Icon: Twitter, url: 'https://twitter.com/rwavenue', label: 'Twitter' },
               { Icon: Instagram, url: 'https://instagram.com/rwavenue', label: 'Instagram' },
-              { Icon: Github, url: 'https://github.com/rwavenue', label: 'GitHub' },
+              { Icon: Github, url: 'https://github.com/0xkid-root/rwavenue', label: 'GitHub' },
             ].map(({ Icon, url, label }, i) => (
               <a
                 key={i}

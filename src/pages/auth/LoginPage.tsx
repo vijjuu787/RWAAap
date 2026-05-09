@@ -40,7 +40,7 @@ export default function LoginPage() {
           <div className="space-y-4">
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-neutral-700">
-                Email address
+                Email address hii fuck off
               </label>
               <div className="mt-1 relative">
                 <input

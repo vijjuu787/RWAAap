@@ -9,7 +9,14 @@
   "dependencies": {
     "@faker-js/faker": "^8.4.1",
     "@headlessui/react": "^1.7.18",
-    "clsx": "^2.1.0",
+    "@radix-ui/react-checkbox": "^1.2.3",
+    "@radix-ui/react-dialog": "^1.1.11",
+    "@radix-ui/react-select": "^2.2.2",
+    "@radix-ui/react-slot": "^1.2.0",
+    "@radix-ui/react-tooltip": "^1.2.4",
+    "axios": "^1.9.0",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
     "date-fns": "^3.3.1",
     "ethers": "^5.7.2",
     "framer-motion": "^11.0.3",
@@ -20,7 +27,9 @@
     "react-dropzone": "^14.2.3",
     "react-hot-toast": "^2.4.1",
     "react-router-dom": "^6.22.0",
-    "tailwind-merge": "^2.2.1",
+    "sonner": "^2.0.3",
+    "tailwind-merge": "^2.6.0",
+    "tailwindcss-animate": "^1.0.7",
     "zustand": "^4.5.0"
   },
   "devDependencies": {

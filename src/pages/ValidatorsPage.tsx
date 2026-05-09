@@ -1,32 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Search } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { ValidatorCard } from '../components/ValidatorCard';
 import { Button } from '../components/ui/Button';
-import { mockValidators } from '../data/mockData';
+import { useValidatorStore } from '../store/validatorStore';
 import { AssetCategory } from '../types';
+import { toast } from '@/hooks/use-toast';
 
 const ValidatorsPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedExpertise, setSelectedExpertise] = useState<AssetCategory | 'all'>('all');
-  
-  const filteredValidators = mockValidators.filter(validator => {
-    // Filter by search term
-    if (
-      searchTerm &&
-      !validator.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
-      !validator.jurisdiction.toLowerCase().includes(searchTerm.toLowerCase())
-    ) {
-      return false;
+  const { validators, loading, error, fetchValidators } = useValidatorStore();
+
+  useEffect(() => {
+    const filters = {
+      searchTerm: searchTerm || undefined,
+      expertise: selectedExpertise === 'all' ? undefined : selectedExpertise
+    };
+    fetchValidators(filters);
+  }, [searchTerm, selectedExpertise]);
+
+  useEffect(() => {
+    if (error) {
+      toast({
+        title: 'Error',
+        description: error,
+        variant: 'destructive'
+      });
     }
-    
-    // Filter by expertise
-    if (selectedExpertise !== 'all' && !validator.expertise.includes(selectedExpertise as AssetCategory)) {
-      return false;
-    }
-    
-    return true;
-  });
+  }, [error]);
   
   const expertiseOptions: { value: AssetCategory | 'all', label: string }[] = [
     { value: 'all', label: 'All Expertise' },
@@ -81,7 +83,18 @@ const ValidatorsPage = () => {
         
         {/* Validators Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-          {filteredValidators.map((validator, index) => (
+          {loading ? (
+            // Loading skeleton
+            Array.from({ length: 6 }).map((_, index) => (
+              <motion.div
+                key={`skeleton-${index}`}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1, duration: 0.3 }}
+                className="bg-white rounded-xl p-6 h-64 animate-pulse"
+              />
+            ))
+          ) : validators.map((validator, index) => (
             <motion.div
               key={validator.id}
               initial={{ opacity: 0, y: 20 }}
@@ -103,7 +116,33 @@ const ValidatorsPage = () => {
                 and quality. Validators are a critical part of our ecosystem, ensuring trust and 
                 transparency in every transaction.
               </p>
-              <Button className="bg-white text-primary-800 hover:bg-neutral-100">
+              <Button 
+                className="bg-white text-primary-800 hover:bg-neutral-100"
+                onClick={async () => {
+                  try {
+                    const result = await useValidatorStore.getState().submitValidatorApplication({
+                      name: '',
+                      expertise: [],
+                      jurisdiction: '',
+                      credentials: [],
+                      verificationFee: {
+                        amount: 0,
+                        currency: 'USD'
+                      }
+                    });
+                    toast({
+                      title: 'Application Submitted',
+                      description: `Your application (ID: ${result.applicationId}) has been submitted successfully.`,
+                    });
+                  } catch (error) {
+                    toast({
+                      title: 'Error',
+                      description: 'Failed to submit validator application. Please try again.',
+                      variant: 'destructive'
+                    });
+                  }
+                }}
+              >
                 Apply Now
               </Button>
             </div>

@@ -15,6 +15,7 @@ const ValidatorsPage = React.lazy(() => import('./pages/ValidatorsPage'));
 const MarketplacePage = React.lazy(() => import('./pages/MarketplacePage'));
 const CommunityPage = React.lazy(() => import('./pages/CommunityPage'));
 const AssetDetailPage = React.lazy(() => import('./pages/AssetDetailPage'));
+const MyAssetsPage = React.lazy(() => import('./pages/MyAssetsPage'));
 
 // Loading component
 const PageLoader = () => (
@@ -75,6 +76,7 @@ function App() {
             <Route path="/asset-creation" element={<TokenizePage />} />
             <Route path="/validators" element={<ValidatorsPage />} />
             <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/my-assets" element={<MyAssetsPage />} />
           </Route>
         </Routes>
       </Suspense>

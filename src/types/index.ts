@@ -6,6 +6,8 @@ export type TokenizationType = 'fractional' | 'whole';
 export type UserRole = 'buyer' | 'seller' | 'validator' | 'admin';
 export type KYCStatus = 'pending' | 'verified' | 'rejected';
 
+export type AssetType = 'watches' | 'art' | 'collectibles' | 'jewelry' | 'real-estate';
+
 export interface Asset {
   id: string;
   title: string;
@@ -42,6 +44,7 @@ export interface Asset {
   views: number;
   likes: number;
   value: number;
+  tokenId: string;
 }
 
 export interface AssetDocument {
@@ -202,4 +205,19 @@ export interface AssetFilter {
 export interface SortOption {
   field: 'price' | 'createdAt' | 'popularity' | 'endTime';
   direction: 'asc' | 'desc';
+}
+
+export interface FilterPanelProps {
+  isOpen: boolean;
+  selectedCategory: string | undefined;
+  setSelectedCategory: (category: string | undefined) => void;
+  priceRange: [number, number];
+  setPriceRange: (range: [number, number]) => void;
+  verifiedOnly: boolean;
+  setVerifiedOnly: (verified: boolean) => void;
+  onReset: () => void;
+  categories: Array<{
+    value: string | undefined;
+    label: string;
+  }>;
 }
