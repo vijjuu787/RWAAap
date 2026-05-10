@@ -1,16 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Menu, X, LogOut } from 'lucide-react';
+import { Menu, X, LogOut, ExternalLink } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { motion, AnimatePresence } from 'framer-motion';
 import { AnimatedLogo } from '../AnimatedLogo';
 import { useAuthStore } from '@/store/authStore';
 import { AuthModal } from '../AuthModal';
 
+// Assuming AnimatedLogoProps is defined elsewhere and includes className
+interface AnimatedLogoProps {
+  className?: string;
+}
+
 export const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const location = useLocation();
@@ -29,10 +33,6 @@ export const Header = () => {
   useEffect(() => {
     setIsMobileMenuOpen(false);
   }, [location]);
-
-  const toggleDarkMode = () => {
-    setIsDarkMode(!isDarkMode);
-  };
 
   const handleOpenAuthModal = () => {
     setIsAuthModalOpen(true);
@@ -82,8 +82,8 @@ export const Header = () => {
   };
 
   const navItems = [
-    { name: 'Marketplace', path: '/marketplace' },
-    // { name: 'Community', path: '/community' },
+    { name: 'Marketplace', path: '/marketplace', isExternal: false },
+    { name: 'Join Waitlist', path: 'https://form.typeform.com/to/vcGRVShj', isExternal: true },
   ];
 
   return (
@@ -102,28 +102,39 @@ export const Header = () => {
           </div>
 
           {/* Desktop Navigation - Centered */}
-           <nav className="hidden md:flex flex-1 justify-center items-center">
+          <nav className="hidden md:flex flex-1 justify-center items-center">
             <div className="flex items-center gap-8">
-              {navItems.map((item) => (
-                <Link
-                  key={item.path}
-                  to={item.path}
-                  className={`text-sm ${
-                    location.pathname === item.path
-                      ? 'text-blue-600 font-medium'
-                      : 'text-neutral-600 hover:text-blue-600'
-                  }`}
-                >
-                  {item.name}
-                </Link>
-              ))}
+              {navItems.map((item) =>
+                item.isExternal ? (
+                  <a
+                    key={item.path}
+                    href={item.path}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm text-neutral-600 hover:text-blue-600 flex items-center gap-1"
+                  >
+                    {item.name}
+                    <ExternalLink size={14} />
+                  </a>
+                ) : (
+                  <Link
+                    key={item.path}
+                    to={item.path}
+                    className={`text-sm ${
+                      location.pathname === item.path
+                        ? 'text-blue-600 font-medium'
+                        : 'text-neutral-600 hover:text-blue-600'
+                    }`}
+                  >
+                    {item.name}
+                  </Link>
+                )
+              )}
             </div>
-          </nav> 
+          </nav>
 
           {/* Right Actions */}
           <div className="flex items-center gap-4">
-            
-
             <div className="hidden md:block">{renderAuthButton()}</div>
 
             <button
@@ -146,24 +157,37 @@ export const Header = () => {
             exit={{ opacity: 0, height: 0 }}
             className="md:hidden bg-white border-t"
           >
-             <div className="container-custom py-4">
+            <div className="container-custom py-4">
               <nav className="flex flex-col gap-4 text-center">
-                {navItems.map((item) => (
-                  <Link
-                    key={item.path}
-                    to={item.path}
-                    className={`text-sm ${
-                      location.pathname === item.path
-                        ? 'text-blue-600 font-medium'
-                        : 'text-neutral-600 hover:text-blue-600'
-                    }`}
-                  >
-                    {item.name}
-                  </Link>
-                ))}
+                {navItems.map((item) =>
+                  item.isExternal ? (
+                    <a
+                      key={item.path}
+                      href={item.path}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm text-neutral-600 hover:text-blue-600 flex items-center gap-1 justify-center"
+                    >
+                      {item.name}
+                      <ExternalLink size={14} />
+                    </a>
+                  ) : (
+                    <Link
+                      key={item.path}
+                      to={item.path}
+                      className={`text-sm ${
+                        location.pathname === item.path
+                          ? 'text-blue-600 font-medium'
+                          : 'text-neutral-600 hover:text-blue-600'
+                      }`}
+                    >
+                      {item.name}
+                    </Link>
+                  )
+                )}
                 <div className="pt-4 border-t">{renderAuthButton()}</div>
               </nav>
-            </div> 
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

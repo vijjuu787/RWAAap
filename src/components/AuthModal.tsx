@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Mail, Lock, ArrowRight, X, User, Wallet } from 'lucide-react';
+import { X, Wallet } from 'lucide-react';
 import { Button } from './ui/Button';
 import { useAuthStore } from '@/store/authStore';
 import { AnimatedLogo } from './AnimatedLogo';
@@ -12,14 +12,7 @@ interface AuthModalProps {
 }
 
 export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
-  const [isLogin, setIsLogin] = useState(true);
-  const [isWeb3Mode, setIsWeb3Mode] = useState(false);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [name, setName] = useState('');
-  
-  // Updated to include clearError from useAuthStore
-  const { login, register, connectWallet, loading, error, clearError } = useAuthStore();
+  const { connectWallet, loading, error, clearError } = useAuthStore();
   const navigate = useNavigate();
 
   // Handle escape key press
@@ -44,27 +37,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
     };
   }, [isOpen, handleEscapeKey]);
 
-  // Handle traditional form submission
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    clearError(); // Clear any previous errors before attempting login/register
-    if (isLogin) {
-      await login(email, password);
-      const { error, isAuthenticated } = useAuthStore.getState();
-      if (!error && isAuthenticated) {
-        navigate('/dashboard'); // Navigate to dashboard on successful login
-        onClose();
-      }
-    } else {
-      await register(name, email, password);
-      const { error, isAuthenticated } = useAuthStore.getState();
-      if (!error && isAuthenticated) {
-        navigate('/dashboard'); // Navigate to dashboard on successful registration
-        onClose();
-      }
-    }
-  };
-
   // Handle Web3 wallet connection
   const handleWeb3Connect = async () => {
     clearError(); // Clear any previous errors before attempting wallet connection
@@ -74,23 +46,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
       navigate('/dashboard'); // Only navigate if connection is successful
       onClose();
     }
-  };
-
-  const toggleAuthMode = () => {
-    setIsLogin(!isLogin);
-    setIsWeb3Mode(false);
-    setEmail('');
-    setPassword('');
-    setName('');
-    clearError(); // Clear error when toggling modes
-  };
-
-  const toggleWeb3Mode = () => {
-    setIsWeb3Mode(!isWeb3Mode);
-    setEmail('');
-    setPassword('');
-    setName('');
-    clearError(); // Clear error when toggling to/from Web3 mode
   };
 
   return (
@@ -143,232 +98,44 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
                       id="modal-title"
                       className="text-[28px] font-bold text-blue-700"
                     >
-                      {isWeb3Mode
-                        ? 'Connect Wallet'
-                        : isLogin
-                        ? 'Welcome back'
-                        : 'Create an account'}
+                      Connect Wallet
                     </h2>
                     <p className="text-base text-neutral-600">
-                      {isWeb3Mode
-                        ? 'Connect your wallet to access the platform'
-                        : isLogin
-                        ? 'Sign in to access your account'
-                        : 'Join our community of asset owners'}
+                      Connect your wallet to access the platform
                     </p>
                   </div>
 
-                  {/* Form or Web3 Button */}
-                  {!isWeb3Mode ? (
-                    <form
-                      className="mt-8 space-y-5"
-                      onSubmit={handleSubmit}
-                      noValidate
+                  {/* Form Content */}
+                  <div className="mt-8 space-y-5">
+                    <Button
+                      fullWidth
+                      disabled={loading}
+                      icon={<Wallet size={16} />}
+                      iconPosition="left"
+                      onClick={handleWeb3Connect}
+                      className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white"
                     >
-                      {!isLogin && (
-                        <div>
-                          <label
-                            htmlFor="name"
-                            className="block text-sm font-medium text-neutral-700 mb-1"
-                          >
-                            Full Name
-                          </label>
-                          <div className="relative">
-                            <input
-                              id="name"
-                              name="name"
-                              type="text"
-                              required
-                              value={name}
-                              onChange={(e) => setName(e.target.value)}
-                              className="w-full px-4 py-2.5 pl-10 text-gray-900 rounded-lg border border-neutral-200 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                              placeholder="Enter your name"
-                              autoComplete="name"
-                              disabled={loading} // Disable input while loading
-                            />
-                            <User
-                              className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-neutral-400"
-                              aria-hidden="true"
-                            />
-                          </div>
-                        </div>
-                      )}
-
-                      <div>
-                        <label
-                          htmlFor="email"
-                          className="block text-sm font-medium text-neutral-700 mb-1"
-                        >
-                          Email address hiiihello how are upi
-                        </label>
-                        <div className="relative">
-                          <input
-                            id="email"
-                            name="email"
-                            type="email"
-                            required
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            className="w-full px-4 py-2.5 pl-10 text-gray-900 rounded-lg border border-neutral-200 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            placeholder="Enter your email"
-                            autoComplete="email"
-                            disabled={loading} // Disable input while loading
-                          />
-                          <Mail
-                            className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-neutral-400"
-                            aria-hidden="true"
-                          />
-                        </div>
-                      </div>
-
-                      <div>
-                        <label
-                          htmlFor="password"
-                          className="block text-sm font-medium text-neutral-700 mb-1"
-                        >
-                          Password
-                        </label>
-                        <div className="relative">
-                          <input
-                            id="password"
-                            name="password"
-                            type="password"
-                            required
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            className="w-full px-4 py-2.5 pl-10 text-gray-900 rounded-lg border border-neutral-200 placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            placeholder="Enter your password"
-                            autoComplete={
-                              isLogin ? 'current-password' : 'new-password'
-                            }
-                            disabled={loading} // Disable input while loading
-                          />
-                          <Lock
-                            className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-neutral-400"
-                            aria-hidden="true"
-                          />
-                        </div>
-                      </div>
-
-                      {isLogin && (
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center">
-                            <input
-                              id="remember-me"
-                              name="remember-me"
-                              type="checkbox"
-                              className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-neutral-300 rounded"
-                              disabled={loading} // Disable checkbox while loading
-                            />
-                            <label
-                              htmlFor="remember-me"
-                              className="ml-2 block text-sm text-neutral-700"
-                            >
-                              Remember me
-                            </label>
-                          </div>
-
-                          <button
-                            type="button"
-                            className="text-sm font-medium text-blue-600 hover:text-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded"
-                            disabled={loading} // Disable button while loading
-                          >
-                            Forgot password?
-                          </button>
-                        </div>
-                      )}
-
-                      {error && (
-                        <div
-                          className="bg-red-50 border border-red-200 text-red-600 p-3 rounded-lg text-sm flex items-center justify-between"
-                          role="alert"
-                        >
-                          <span>{error}</span>
-                          <button
-                            type="button"
-                            onClick={clearError}
-                            className="text-red-600 hover:text-red-800 font-medium"
-                          >
-                            Retry
-                          </button>
-                        </div>
-                      )}
-
-                      <Button
-                        type="submit"
-                        fullWidth
-                        disabled={loading}
-                        icon={<ArrowRight size={16} />}
-                        iconPosition="right"
+                      {loading ? 'Connecting...' : 'Continue with Wallet'}
+                    </Button>
+                    {error && (
+                      <div
+                        className="bg-red-50 border border-red-200 text-red-600 p-3 rounded-lg text-sm flex items-center justify-between"
+                        role="alert"
                       >
-                        {loading
-                          ? isLogin
-                            ? 'Signing in...'
-                            : 'Creating account...'
-                          : isLogin
-                          ? 'Sign in'
-                          : 'Create account'}
-                      </Button>
-
-                      <p className="text-center text-sm text-neutral-600">
-                        {isLogin
-                          ? "Don't have an account?"
-                          : 'Already have an account?'}{' '}
+                        <span>{error}</span>
                         <button
                           type="button"
-                          onClick={toggleAuthMode}
-                          className="font-medium text-blue-600 hover:text-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded"
-                          disabled={loading} // Disable button while loading
+                          onClick={() => {
+                            clearError();
+                            handleWeb3Connect();
+                          }}
+                          className="text-red-600 hover:text-red-800 font-medium"
                         >
-                          {isLogin ? 'Sign up' : 'Sign in'}
+                          Retry
                         </button>
-                      </p>
-                    </form>
-                  ) : (
-                    <div className="mt-8 space-y-5">
-                      <Button
-                        fullWidth
-                        disabled={loading}
-                        icon={<Wallet size={16} />}
-                        iconPosition="left"
-                        onClick={handleWeb3Connect}
-                        className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white"
-                      >
-                        {loading ? 'Connecting...' : 'Continue with Wallet'}
-                      </Button>
-                      {error && (
-                        <div
-                          className="bg-red-50 border border-red-200 text-red-600 p-3 rounded-lg text-sm flex items-center justify-between"
-                          role="alert"
-                        >
-                          <span>{error}</span>
-                          <button
-                            type="button"
-                            onClick={() => {
-                              clearError();
-                              handleWeb3Connect();
-                            }}
-                            className="text-red-600 hover:text-red-800 font-medium"
-                          >
-                            Retry
-                          </button>
-                        </div>
-                      )}
-                    </div>
-                  )}
-
-                  {/* Toggle Web3 Mode */}
-                  <p className="text-center text-sm text-neutral-600 mt-4">
-                    {isWeb3Mode ? 'Use email instead?' : 'Use a wallet instead?'}{' '}
-                    <button
-                      type="button"
-                      onClick={toggleWeb3Mode}
-                      className="font-medium text-blue-600 hover:text-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded"
-                      disabled={loading} // Disable button while loading
-                    >
-                      {isWeb3Mode ? 'Sign in with Email' : 'Connect Wallet'}
-                    </button>
-                  </p>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </motion.div>
             </div>
