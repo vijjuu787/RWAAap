@@ -5,14 +5,14 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "@openzeppelin/contracts/proxy/Clones.sol";
-import "./RWAvenueToken.sol";
+import "./RWAHubToken.sol";
 
-contract RWAvenueTokenFactory is Initializable, UUPSUpgradeable, AccessControlUpgradeable {
+contract RWAHubTokenFactory is Initializable, UUPSUpgradeable, AccessControlUpgradeable {
     // Roles
     bytes32 public constant ADMIN_ROLE = keccak256("ADMIN_ROLE");
     bytes32 public constant UPGRADER_ROLE = keccak256("UPGRADER_ROLE");
 
-    // Implementation address for RWAvenueToken
+    // Implementation address for RWAHubToken
     address public implementation;
     bool private _implementationSet;
 
@@ -31,7 +31,7 @@ contract RWAvenueTokenFactory is Initializable, UUPSUpgradeable, AccessControlUp
     /**
      * @dev Initializes the factory with admin, upgrader roles, and implementation address.
      * @param admin Address to receive admin and upgrader roles.
-     * @param _implementation Address of the RWAvenueToken implementation.
+     * @param _implementation Address of the RWAHubToken implementation.
      */
     function initialize(address admin, address _implementation) public initializer {
         require(admin != address(0), "Invalid admin address");
@@ -61,7 +61,7 @@ contract RWAvenueTokenFactory is Initializable, UUPSUpgradeable, AccessControlUp
     function _authorizeUpgrade(address newImplementation) internal override onlyRole(UPGRADER_ROLE) {}
 
     /**
-     * @dev Deploys a new RWAvenueToken instance using a minimal proxy.
+     * @dev Deploys a new RWAHubToken instance using a minimal proxy.
      * @param admin Address to receive all roles in the deployed token.
      * @param name Name of the token (for event tracking).
      * @param symbol Symbol of the token (for event tracking).
@@ -85,10 +85,10 @@ contract RWAvenueTokenFactory is Initializable, UUPSUpgradeable, AccessControlUp
         address proxy = Clones.clone(implementation);
 
         // Initialize the proxy
-        RWAvenueToken(proxy).initialize();
+        RWAHubToken(proxy).initialize();
 
         // Grant all roles to the admin
-        RWAvenueToken token = RWAvenueToken(proxy);
+        RWAHubToken token = RWAHubToken(proxy);
         token.grantRole(token.DEFAULT_ADMIN_ROLE(), admin);
         token.grantRole(token.MINTER_ROLE(), admin);
         token.grantRole(token.PAUSER_ROLE(), admin);
@@ -113,7 +113,7 @@ contract RWAvenueTokenFactory is Initializable, UUPSUpgradeable, AccessControlUp
 
     /**
      * @dev Returns the implementation address.
-     * @return Address of the RWAvenueToken implementation.
+     * @return Address of the RWAHubToken implementation.
      */
     function getImplementation() external view returns (address) {
         return implementation;

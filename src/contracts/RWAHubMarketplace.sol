@@ -23,7 +23,7 @@ interface ICompliance {
     function transferred(address _from, address _to, uint256 _id, uint256 _amount) external;
 }
 
-contract RWAvenueMarketplace is
+contract RWAHubMarketplace is
     Initializable,
     ERC1155Upgradeable,
     AccessControlUpgradeable,

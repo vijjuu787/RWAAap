@@ -14,7 +14,7 @@ interface IIdentityRegistry {
     function identity(address _userAddress) external view returns (bytes32);
 }
 
-contract RWAvenueKYC is
+contract RWAHubKYC is
     Initializable,
     AccessControlUpgradeable,
     PausableUpgradeable,

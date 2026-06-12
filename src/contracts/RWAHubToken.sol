@@ -28,7 +28,7 @@ interface IToken {
     event TokensBurned(address indexed account, uint256 indexed id, uint256 amount);
 }
 
-contract RWAvenueToken is 
+contract RWAHubToken is 
     Initializable, 
     ERC1155Upgradeable, 
     AccessControlUpgradeable, 

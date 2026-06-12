@@ -76,7 +76,7 @@
         "type": "string"
       },
       {
-        "internalType": "enum RWAvenueMarketplace.AssetStatus",
+        "internalType": "enum RWAHubMarketplace.AssetStatus",
         "name": "status",
         "type": "uint8"
       },
@@ -86,7 +86,7 @@
         "type": "uint256"
       },
       {
-        "internalType": "enum RWAvenueMarketplace.TokenizationType",
+        "internalType": "enum RWAHubMarketplace.TokenizationType",
         "name": "tokenizationType",
         "type": "uint8"
       },
@@ -106,7 +106,7 @@
         "type": "uint256"
       },
       {
-        "internalType": "enum RWAvenueMarketplace.ListingType",
+        "internalType": "enum RWAHubMarketplace.ListingType",
         "name": "listingType",
         "type": "uint8"
       },
@@ -217,7 +217,7 @@
         "type": "uint256"
       },
       {
-        "internalType": "enum RWAvenueMarketplace.ListingType",
+        "internalType": "enum RWAHubMarketplace.ListingType",
         "name": "listingType",
         "type": "uint8"
       },
@@ -263,7 +263,7 @@
         "type": "uint256"
       },
       {
-        "internalType": "enum RWAvenueMarketplace.TokenizationType",
+        "internalType": "enum RWAHubMarketplace.TokenizationType",
         "name": "tokenizationType",
         "type": "uint8"
       },
@@ -278,7 +278,7 @@
         "type": "uint256"
       },
       {
-        "internalType": "enum RWAvenueMarketplace.ListingType",
+        "internalType": "enum RWAHubMarketplace.ListingType",
         "name": "listingType",
         "type": "uint8"
       },
@@ -332,7 +332,7 @@
         "type": "uint256"
       },
       {
-        "internalType": "enum RWAvenueMarketplace.ListingType",
+        "internalType": "enum RWAHubMarketplace.ListingType",
         "name": "listingType",
         "type": "uint8"
       },

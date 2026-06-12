@@ -90,7 +90,7 @@
             "type": "address"
           },
           {
-            "internalType": "enum RWAvenueKYC.KYCStatus",
+            "internalType": "enum RWAHubKYC.KYCStatus",
             "name": "status",
             "type": "uint8"
           },
@@ -130,7 +130,7 @@
             "type": "string"
           },
           {
-            "internalType": "enum RWAvenueKYC.RiskLevel",
+            "internalType": "enum RWAHubKYC.RiskLevel",
             "name": "riskLevel",
             "type": "uint8"
           },
@@ -150,7 +150,7 @@
             "type": "address"
           }
         ],
-        "internalType": "struct RWAvenueKYC.KYCData",
+        "internalType": "struct RWAHubKYC.KYCData",
         "name": "",
         "type": "tuple"
       }
