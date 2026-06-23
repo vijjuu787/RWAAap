@@ -62,51 +62,6 @@ export default function CommunityPage() {
           </div>
         </section>
 
-        {/* Upcoming Events */}
-        <section className="mb-10">
-          <h2 className="text-2xl font-bold text-primary-800 mb-6">Upcoming Events</h2>
-          
-          <div className="space-y-4">
-            {[
-              {
-                title: 'Tokenization Workshop',
-                date: 'June 15, 2023',
-                location: 'Virtual',
-                description: 'Learn how to tokenize your assets with our step-by-step workshop'
-              },
-              {
-                title: 'RW Avenue Conference',
-                date: 'July 22-23, 2023',
-                location: 'New York, NY',
-                description: 'Annual conference for real-world asset tokenization'
-              },
-              {
-                title: 'Validator Meetup',
-                date: 'August 5, 2023',
-                location: 'London, UK',
-                description: 'Network with validators and learn about the validation process'
-              }
-            ].map((event, index) => (
-              <motion.div 
-                key={index}
-                whileHover={{ x: 5 }}
-                className="bg-white p-6 rounded-lg shadow-sm border border-neutral-200 flex flex-col md:flex-row md:items-center gap-4"
-              >
-                <div className="bg-primary-100 text-primary-800 p-3 rounded-lg text-center md:w-32">
-                  <div className="font-bold">{event.date.split(',')[0]}</div>
-                </div>
-                
-                <div className="flex-1">
-                  <h3 className="font-semibold text-lg">{event.title}</h3>
-                  <p className="text-neutral-600">{event.description}</p>
-                  <div className="text-sm text-neutral-500 mt-1">{event.location}</div>
-                </div>
-                
-                <Button variant="outline" size="sm">Register</Button>
-              </motion.div>
-            ))}
-          </div>
-        </section>
 
         {/* Community Forum Preview */}
         <section>

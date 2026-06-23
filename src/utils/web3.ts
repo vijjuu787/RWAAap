@@ -1,8 +1,8 @@
 import { ethers, Contract, Signer, BigNumber, Event } from 'ethers';
 import { Provider } from '@ethersproject/providers';
 
-// ABI for RWAvenueToken.sol
-const RWAvenueTokenABI = [
+// ABI for RWAHubToken.sol
+const RWAHubTokenABI = [
   // ERC-1155 functions
   'function balanceOf(address account, uint256 id) view returns (uint256)',
   'function safeTransferFrom(address from, address to, uint256 id, uint256 amount, bytes data) external',
@@ -49,8 +49,8 @@ const RWAvenueTokenABI = [
   'event RecoverySuccess(address indexed lostWallet, address indexed newWallet, address indexed investorId)',
 ];
 
-// ABI for RWAvenueKYC.sol
-const RWAvenueKYCABI = [
+// ABI for RWAHubKYC.sol
+const RWAHubKYCABI = [
   // KYC submission
   'function submitKYC(string governmentId, string proofOfAddress, string[] additionalDocs, string nationality) external',
   'function updateDocuments(string governmentId, string proofOfAddress, string[] additionalDocs, string nationality) external',
@@ -90,8 +90,8 @@ const RWAvenueKYCABI = [
   'event FundsWithdrawn(address indexed token, address indexed recipient, uint256 amount)',
 ];
 
-// ABI for RWAvenueMarketplace.sol
-const RWAvenueMarketplaceABI = [
+// ABI for RWAHubMarketplace.sol
+const RWAHubMarketplaceABI = [
   // Asset management
   'function createAsset(string title, string description, string category, uint256 price, uint8 tokenizationType, uint256 totalTokens, uint256 pricePerToken, uint8 listingType, uint256 auctionEndTime, address royaltyReceiver, uint96 royaltyFraction) external returns (uint256)',
   'function validateAsset(uint256 assetId) external',
@@ -209,7 +209,7 @@ interface BidDetails {
 }
 
 // Main SDK class
-export class RWAvenueSDK {
+export class RWAHubSDK {
   private provider: Provider;
   private signer: Signer | null;
   private tokenContract: Contract;
@@ -225,9 +225,9 @@ export class RWAvenueSDK {
   ) {
     this.provider = provider;
     this.signer = signer || null;
-    this.tokenContract = new Contract(tokenAddress, RWAvenueTokenABI, signer || provider);
-    this.kycContract = new Contract(kycAddress, RWAvenueKYCABI, signer || provider);
-    this.marketplaceContract = new Contract(marketplaceAddress, RWAvenueMarketplaceABI, signer || provider);
+    this.tokenContract = new Contract(tokenAddress, RWAHubTokenABI, signer || provider);
+    this.kycContract = new Contract(kycAddress, RWAHubKYCABI, signer || provider);
+    this.marketplaceContract = new Contract(marketplaceAddress, RWAHubMarketplaceABI, signer || provider);
   }
 
   // Connect a signer (e.g., MetaMask)

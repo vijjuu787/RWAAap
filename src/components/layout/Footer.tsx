@@ -105,9 +105,9 @@ export const Footer = () => {
           
           <div className="flex space-x-4">
             {[
-              { Icon: Twitter, url: 'https://twitter.com/rwavenue', label: 'Twitter' },
-              { Icon: Instagram, url: 'https://instagram.com/rwavenue', label: 'Instagram' },
-              { Icon: Github, url: 'https://github.com/0xkid-root/rwavenue', label: 'GitHub' },
+              { Icon: Twitter, url: '', label: 'Twitter' },
+              { Icon: Instagram, url: '', label: 'Instagram' },
+              { Icon: Github, url: '', label: 'GitHub' },
             ].map(({ Icon, url, label }, i) => (
               <a
                 key={i}

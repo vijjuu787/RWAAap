@@ -39,12 +39,11 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
 
   // Handle Web3 wallet connection
   const handleWeb3Connect = async () => {
-    clearError(); // Clear any previous errors before attempting wallet connection
-    await connectWallet();
-    const { error, isAuthenticated } = useAuthStore.getState();
-    if (!error && isAuthenticated) {
-      navigate('/dashboard'); // Only navigate if connection is successful
+    clearError();
+    const ok = await connectWallet();
+    if (ok) {
       onClose();
+      navigate('/dashboard', { replace: true });
     }
   };
 

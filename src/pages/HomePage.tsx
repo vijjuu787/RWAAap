@@ -8,10 +8,28 @@ import { mockValidators } from '../data/mockData';
 import { Button } from '../components/ui/Button';
 import { Header } from '../components/layout/Header';
 
+import { useEffect, useState } from "react";
+import axios from 'axios';
+
 const HomePage = () => {
   // Show only the top 3 featured validators
+  const [recentHistory, setRecentHistory] = useState([]);
   const featuredValidators = mockValidators.slice(0, 3);
-  
+  const API_URL = import.meta.env.VITE_API_URL;
+
+  const getValidators = async () => {
+    try {  
+      const res = await axios.get(`${API_URL}/api/validators`);
+      setRecentHistory(res.data);
+    } catch (err) {
+      console.error("Dashboard fetch error:", err);
+    }
+  };
+
+  useEffect(() => {
+    getValidators();
+  }, []);
+
   return (
     <div>
       <Header />
@@ -19,6 +37,20 @@ const HomePage = () => {
       <StatsSection />
       <FeaturedAssets />
       <HowItWorks />
+      
+       {/* Example usage of recentHistory */}
+      {/* <section>
+        <h2 className="text-2xl font-bold">Recent Validator Activity</h2>
+        {recentHistory.length === 0 ? (
+          <p>No recent activity yet.</p>
+        ) : (
+          <ul>
+            {recentHistory.map(item => (
+              <li >{item}</li>
+            ))}
+          </ul>
+        )}
+      </section> */}
       
       {/* Featured Validators Section */}
       <section className="py-16 bg-gradient-to-b from-neutral-50 to-white">

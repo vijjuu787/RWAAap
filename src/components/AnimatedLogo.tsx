@@ -83,7 +83,7 @@ export const AnimatedLogo: React.FC<AnimatedLogoProps> = ({ iconOnly = false }) 
           variants={venueVariants}
           className="ml-1 text-2xl font-light text-gray-600"
         >
-          venue
+          hub
         </motion.span>
       )}
     </div>

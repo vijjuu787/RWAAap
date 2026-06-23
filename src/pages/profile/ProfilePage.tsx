@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { User, Camera, Mail, Key, Bell, Shield, Wallet, Copy } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { useAuthStore } from '@/store/authStore';
 
 export default function ProfilePage() {
+  const navigate = useNavigate();
   const { user, updateProfile, loading, connectWallet, disconnectWallet } = useAuthStore();
   const [activeTab, setActiveTab] = useState('profile');
   const [name, setName] = useState(user?.name || '');
@@ -33,7 +35,10 @@ export default function ProfilePage() {
 
   const handleConnectWallet = async () => {
     try {
-      await connectWallet();
+      const ok = await connectWallet();
+      if (ok) {
+        navigate('/dashboard', { replace: true });
+      }
     } catch (err) {
       console.error('Failed to connect wallet:', err);
     }

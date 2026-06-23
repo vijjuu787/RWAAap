@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { FormData } from '@/pages/tokenize/TokenizePage';
 
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:3001/api';
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000/api';
 
 export interface IPFSResponse {
   hash: string;
