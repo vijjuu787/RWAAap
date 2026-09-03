@@ -8,6 +8,7 @@ class MockDatabase {
     this.users = new Map();
     this.transactions = new Map();
     this.validationRequests = new Map();
+    this.watchlists = new Map(); // userId -> Set<assetId>
     this.initializeData();
   }
 
@@ -233,6 +234,153 @@ class MockDatabase {
         value: 2500000,
         tokenId: '12349',
       },
+      // The following ids also exist in the frontend's local mockDataStore
+      // (src/store/mockDataStore.ts) so that every asset shown in the
+      // marketplace can be favorited end-to-end.
+      {
+        id: 're1',
+        title: 'Luxury Downtown Penthouse',
+        description: 'Stunning 3-bedroom penthouse with panoramic city views, private elevator, and rooftop terrace.',
+        category: 'real-estate',
+        status: 'validated',
+        imageUrl: '/assets/real-estate/penthouse-1.jpg.svg',
+        images: ['/assets/real-estate/penthouse-1.jpg.svg'],
+        price: {
+          amount: 3500000,
+          currency: 'USDT',
+        },
+        tokenization: {
+          type: 'fractional',
+          totalTokens: 1000,
+          availableTokens: 850,
+          pricePerToken: 3500,
+        },
+        listingType: 'fixed',
+        isVerified: true,
+        owner: {
+          id: 'user789',
+          name: 'Emma Thompson',
+          rating: 4.8,
+        },
+        validation: {
+          status: 'validated',
+          validatedAt: new Date('2024-01-12'),
+        },
+        createdAt: new Date('2024-01-05'),
+        updatedAt: new Date('2024-01-05'),
+        views: 450,
+        likes: 120,
+        value: 3500000,
+        tokenId: '12350',
+      },
+      {
+        id: 're2',
+        title: 'Historic Vineyard Estate',
+        description: 'Magnificent 50-acre wine estate with main villa, guest house, and productive vineyard.',
+        category: 'real-estate',
+        status: 'pending',
+        imageUrl: '/assets/real-estate/vineyard-1.jpg',
+        images: ['/assets/real-estate/vineyard-1.jpg'],
+        price: {
+          amount: 8500000,
+          currency: 'USDT',
+        },
+        tokenization: {
+          type: 'fractional',
+          totalTokens: 2000,
+          availableTokens: 2000,
+          pricePerToken: 4250,
+        },
+        listingType: 'auction',
+        isVerified: false,
+        owner: {
+          id: 'user456',
+          name: 'Robert Wilson',
+          rating: 4.6,
+        },
+        validation: {
+          status: 'pending',
+        },
+        createdAt: new Date('2024-02-10'),
+        updatedAt: new Date('2024-02-10'),
+        auctionEndTime: '2025-12-10T00:00:00Z',
+        views: 280,
+        likes: 95,
+        value: 8500000,
+        tokenId: '12351',
+      },
+      {
+        id: 'j1',
+        title: 'Art Deco Diamond Ring',
+        description: 'Exquisite 1920s platinum ring featuring a 3.5ct center diamond with sapphire accents.',
+        category: 'jewelry',
+        status: 'validated',
+        imageUrl: '/assets/jewelry/diamond-ring-1.jpg',
+        images: ['/assets/jewelry/diamond-ring-1.jpg'],
+        price: {
+          amount: 85000,
+          currency: 'USDT',
+        },
+        tokenization: {
+          type: 'whole',
+          totalTokens: 1,
+          availableTokens: 1,
+          pricePerToken: 85000,
+        },
+        listingType: 'fixed',
+        isVerified: true,
+        owner: {
+          id: 'user234',
+          name: 'Isabella Chen',
+          rating: 4.9,
+        },
+        validation: {
+          status: 'validated',
+          validatedAt: new Date('2024-01-25'),
+        },
+        createdAt: new Date('2024-01-18'),
+        updatedAt: new Date('2024-01-18'),
+        views: 320,
+        likes: 78,
+        value: 85000,
+        tokenId: '12352',
+      },
+      {
+        id: 'j2',
+        title: 'Emerald and Pearl Tiara',
+        description: 'Royal collection piece featuring natural Colombian emeralds and South Sea pearls.',
+        category: 'jewelry',
+        status: 'pending',
+        imageUrl: '/assets/jewelry/tiara-1.jpg',
+        images: ['/assets/jewelry/tiara-1.jpg'],
+        price: {
+          amount: 125000,
+          currency: 'USDT',
+        },
+        tokenization: {
+          type: 'fractional',
+          totalTokens: 100,
+          availableTokens: 100,
+          pricePerToken: 1250,
+        },
+        listingType: 'auction',
+        isVerified: false,
+        owner: {
+          id: 'user567',
+          name: 'Victoria Adams',
+          rating: 4.7,
+        },
+        validation: {
+          status: 'pending',
+        },
+        createdAt: new Date('2024-02-15'),
+        updatedAt: new Date('2024-02-15'),
+        auctionEndTime: '2025-12-15T00:00:00Z',
+        views: 180,
+        likes: 45,
+        value: 125000,
+        tokenId: '12353',
+      },
     ];
 
     mockAssets.forEach(asset => {
@@ -444,6 +592,37 @@ class MockDatabase {
     };
     this.assets.set(id, updatedAsset);
     return updatedAsset;
+  }
+
+  // User methods
+  getUserById(id) {
+    return this.users.get(id);
+  }
+
+  // Watchlist methods
+  getWatchlistAssetIds(userId) {
+    return Array.from(this.watchlists.get(userId) || []);
+  }
+
+  getWatchlist(userId) {
+    return this.getWatchlistAssetIds(userId)
+      .map(assetId => this.assets.get(assetId))
+      .filter(Boolean);
+  }
+
+  isInWatchlist(userId, assetId) {
+    return this.watchlists.get(userId)?.has(assetId) || false;
+  }
+
+  addToWatchlist(userId, assetId) {
+    if (!this.watchlists.has(userId)) {
+      this.watchlists.set(userId, new Set());
+    }
+    this.watchlists.get(userId).add(assetId);
+  }
+
+  removeFromWatchlist(userId, assetId) {
+    return this.watchlists.get(userId)?.delete(assetId) || false;
   }
 
   // Validator methods

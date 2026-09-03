@@ -1,6 +1,7 @@
 import  { useState, useEffect } from 'react';
-import { Search, Filter, Grid, List, SlidersHorizontal } from 'lucide-react';
+import { Search, Filter, Grid, List, SlidersHorizontal, Heart } from 'lucide-react';
 import { useMockDataStore } from '@/store/mockDataStore';
+import { useWatchlistStore } from '@/store/watchlistStore';
 import { Button } from '@/components/ui/Button';
 import { AssetCategory, Asset } from '@/types';
 import { CategoryFilter } from '@/components/marketplace/CategoryFilter';
@@ -17,12 +18,14 @@ const sortOptions = [
 
 export default function MarketplacePage() {
   const { assets, loading, loadMoreAssets, filterAssets } = useMockDataStore();
+  const { fetchWatchlist, isFavorite, favoriteIds } = useWatchlistStore();
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<AssetCategory | undefined>();
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000000]);
   const [verifiedOnly, setVerifiedOnly] = useState(false);
+  const [favoritesOnly, setFavoritesOnly] = useState(false);
   const [selectedConditions, setSelectedConditions] = useState<string[]>([]);
   const [sortOption, setSortOption] = useState<'newest' | 'price-low-high' | 'price-high-low' | 'ending-soon'>('newest');
   const [quickViewAsset, setQuickViewAsset] = useState<Asset | null>(null);
@@ -30,25 +33,33 @@ export default function MarketplacePage() {
   const [filteredAssets, setFilteredAssets] = useState<Asset[]>(assets);
 
   useEffect(() => {
+    fetchWatchlist();
+  }, [fetchWatchlist]);
+
+  useEffect(() => {
     // Start with all assets
     let result = [...assets];
-    
+
     // Apply category and price range filters first
     result = filterAssets(selectedCategory, priceRange, verifiedOnly);
-    
+
     // Then apply search filter if there's a search query
     if (searchQuery.trim()) {
-      result = result.filter(asset => 
+      result = result.filter(asset =>
         asset.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         asset.description.toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
-    
+
+    if (favoritesOnly) {
+      result = result.filter(asset => isFavorite(asset.id));
+    }
+
     // Finally apply sorting
     result = sortAssets(result, sortOption);
-    
+
     setFilteredAssets(result);
-  }, [assets, searchQuery, selectedCategory, priceRange, verifiedOnly, sortOption]);
+  }, [assets, searchQuery, selectedCategory, priceRange, verifiedOnly, favoritesOnly, favoriteIds, sortOption]);
 
   const sortAssets = (assetsToSort: Asset[], sortBy: string) => {
     switch (sortBy) {
@@ -98,6 +109,15 @@ export default function MarketplacePage() {
             >
               <Filter size={20} />
               Filters
+            </Button>
+            <Button
+              onClick={() => setFavoritesOnly(!favoritesOnly)}
+              variant={favoritesOnly ? 'primary' : 'outline'}
+              className="flex items-center gap-2"
+              aria-pressed={favoritesOnly}
+            >
+              <Heart size={18} className={favoritesOnly ? 'fill-current' : ''} />
+              Favorites
             </Button>
             <div className="hidden md:flex items-center gap-2">
               <button
