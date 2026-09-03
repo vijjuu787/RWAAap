@@ -37,6 +37,7 @@ app.use('/api/transactions', require('./routes/transactions'));
 app.use('/api/dashboard', require('./routes/dashboard'));
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/ipfs', require('./routes/ipfs'));
+app.use('/api/users', require('./routes/watchlist'));
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
