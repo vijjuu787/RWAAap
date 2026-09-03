@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Menu, X, LogOut, ExternalLink } from 'lucide-react';
+import { Menu, X, LogOut, ExternalLink, Heart } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { motion, AnimatePresence } from 'framer-motion';
 import { AnimatedLogo } from '../AnimatedLogo';
 import { useAuthStore } from '@/store/authStore';
+import { useWatchlistStore } from '@/store/watchlistStore';
 import { AuthModal } from '../AuthModal';
 
 // Assuming AnimatedLogoProps is defined elsewhere and includes className
@@ -20,6 +21,7 @@ export const Header = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { isAuthenticated, user, logout, loading } = useAuthStore();
+  const { favoriteIds, fetchWatchlist } = useWatchlistStore();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -29,6 +31,10 @@ export const Header = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  useEffect(() => {
+    fetchWatchlist();
+  }, [fetchWatchlist]);
 
   useEffect(() => {
     setIsMobileMenuOpen(false);
@@ -135,6 +141,14 @@ export const Header = () => {
 
           {/* Right Actions */}
           <div className="flex items-center gap-4">
+            <Link
+              to="/marketplace"
+              className="flex items-center gap-1.5 text-sm text-neutral-600 hover:text-blue-600"
+              aria-label={`${favoriteIds.size} favorites`}
+            >
+              <Heart size={18} className={favoriteIds.size > 0 ? 'fill-error-500 text-error-500' : ''} />
+              <span>{favoriteIds.size}</span>
+            </Link>
             <div className="hidden md:block">{renderAuthButton()}</div>
 
             <button
